@@ -6,8 +6,6 @@ for the outgoing queue.
 
 ## Workflow diagram
 
-![Job Manager workflow](./diagrams/job-manager.svg)
-
 [View Mermaid source](./diagrams/job-manager.mmd)
 
 ## Processing logic
