@@ -1,0 +1,27 @@
+flowchart RL
+    JM["Job Manager"]
+
+    subgraph DB["DataBus"]
+        direction TB
+        IQ[("Incoming Queue")]
+        OQ[("Outgoing Queue")]
+    end
+
+    DL["Downloader"]
+
+    DL -- "Update & Push Jobs" --> IQ
+    IQ -- "Consume Jobs" --> JM
+
+    JM -- "Schedule & Push Jobs" --> OQ
+    OQ -- "Consume Jobs" --> DL
+
+    classDef manager fill:#D6EAF8,stroke:#2471A3,color:#154360,stroke-width:2px
+    classDef downloader fill:#FCF3CF,stroke:#D4AC0D,color:#7D6608,stroke-width:2px
+    classDef queue fill:#D5F5E3,stroke:#239B56,color:#145A32,stroke-width:2px
+    classDef bus fill:#F4F6F7,stroke:#7B7D7D,color:#2C3E50,stroke-width:2px
+
+    class JM manager
+    class DL downloader
+    class IQ,OQ queue
+    style DB fill:#F8F9F9,stroke:#85929E,stroke-width:2px
+
