@@ -1,0 +1,41 @@
+
+flowchart TD
+    L["Listener"]
+    LQ[("Listener Queue")]
+    W["Listener Worker"]
+    JB["Job Builder<br/>Filters & Validation"]
+    J{"Job returned?"}
+    IF@{ shape: manual-input, label: "Input File" }
+    
+
+    IQ[("incomingQueue")]
+
+    L -- "enqueue clipboard text" --> LQ
+    LQ --> W
+    W --> JB
+    JB --> J
+    J -- "Yes" --> IF
+    J -- "Yes" --> IQ
+    J -- "No: filtered / invalid" --> END["Discard / Skip"]
+
+    W -- "append original URL" --> IF
+    W -- "enqueue job" --> IQ
+
+    classDef listener fill:#D6EAF8,stroke:#2471A3,color:#154360,stroke-width:2px
+    classDef worker fill:#D5F5E3,stroke:#239B56,color:#145A32,stroke-width:2px
+    %% classDef  fill:#FCF3CF,stroke:#D4AC0D,color:#7D6608,stroke-width:2px
+    classDef builder fill:#E8DAEF,stroke:#884EA0,color:#512E5F,stroke-width:3px
+    classDef decision fill:#FCF3CF,stroke:#D4AC0D,color:#784212,stroke-width:2px
+    classDef output fill:#D5F5E3,stroke:#239B56,color:#145A32,stroke-width:2px
+    classDef discard fill:#FADBD8,stroke:#C0392B,color:#78281F,stroke-width:2px
+
+    class L listener
+    class LQ queue
+    class W worker
+    class JB builder
+    class J decision
+    class IQ output
+    class END discard
+
+
+
