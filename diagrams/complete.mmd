@@ -1,16 +1,17 @@
+
 flowchart LR
 
     subgraph core["Core Pipeline"]
     direction RL
         jobmanager@{ shape: rect, label: "Job Manager" }
-        downloader@{ shape: rounded, label: "Downloader"}
-        logging@{ shape: rounded, label: "Logging"}
-        cookiemanager@{ shape: rounded, label: "Cookie Manager"}
+        downloader@{ shape: rounded, label: "Downloader" }
+        logging@{ shape: rounded, label: "Logging" }
+        cookiemanager@{ shape: rounded, label: "Cookie Manager" }
 
         subgraph bus["DataBus"]
             direction TB
-            inqueue@{ shape: cyl, label:"Incoming Queue"}
-            outqueue@{ shape: cyl, label:"Outgoing Queue"}
+            inqueue@{ shape: cyl, label: "Incoming Queue" }
+            outqueue@{ shape: cyl, label: "Outgoing Queue" }
         end
 
         downloader -- "Update & Push Jobs" --> inqueue
@@ -19,50 +20,58 @@ flowchart LR
         jobmanager --> logging
         cookiemanager --> downloader
         outqueue -- "Consume Jobs" --> downloader
-    style jobmanager fill:#D6EAF8,stroke:#2471A3,color:#154360,stroke-width:2px
-    style downloader fill:#FCF3CF,stroke:#D4AC0D,color:#7D6608,stroke-width:2px
-    style inqueue fill:#D5F5E3,stroke:#239B56,color:#145A32,stroke-width:2px
-    style outqueue fill:#D5F5E3,stroke:#239B56,color:#145A32,stroke-width:2px
-    style bus fill:#F4F6F7,stroke:#7B7D7D,color:#2C3E50,stroke-width:2px
-
     end
-
 
     subgraph job["Job Creation"]
     direction TD
-        inputfile@{shape: manual-input, label: "Input File"}
-        
+        inputfile@{ shape: manual-input, label: "Input File" }
         logs@{ shape: docs, label: "Logs" }
         jobhistory@{ shape: rounded, label: "Job History" }
         jobbuilder@{ shape: rounded, label: "Job Builder" }
+
         subgraph listen["Clipboard Monitoring"]
         direction TD
             lisqueue@{ shape: cyl, label: "Listening Queue" }
-            listener@{ shape: rounded, label: "Listener"}
-            worker@{ shape: rounded, label: "Listener Worker"}
-
-            
+            listener@{ shape: rounded, label: "Listener" }
+            worker@{ shape: rounded, label: "Listener Worker" }
         end
-    logs --> jobhistory
-    jobhistory --> jobbuilder
-    inputfile --> jobbuilder
-    listener --> lisqueue
-    lisqueue --> worker
-    worker --> jobbuilder
-    worker --> inputfile
-    jobbuilder -->inqueue
 
-    style jobhistory fill:#D7BDE2,stroke:#884EA0,color:#1B2631
-        style jobbuilder fill:#D6EAF8,stroke:#2471A3,color:#154360,stroke-width:2px
+        logs --> jobhistory
+        jobhistory --> jobbuilder
+        inputfile --> jobbuilder
+        listener --> lisqueue
+        lisqueue --> worker
+        worker --> jobbuilder
+        worker --> inputfile
+        jobbuilder --> inqueue
+    end
 
-end
+    %% Component colors
+    classDef primary fill:#DCEBFF,stroke:#6D9EEB,color:#193B66,stroke-width:1.8px
+    classDef process fill:#EAF2FC,stroke:#9BB8DE,color:#294765,stroke-width:1.5px
+    classDef queue fill:#DDF5EA,stroke:#70B99A,color:#205C46,stroke-width:1.8px
+    classDef monitor fill:#FCEBDD,stroke:#E5AC83,color:#79482D,stroke-width:1.8px
+    classDef history fill:#EEE7FA,stroke:#B3A0D9,color:#4D3B70,stroke-width:1.5px
+    classDef neutral fill:#F1F4F8,stroke:#B8C4D3,color:#39485A,stroke-width:1.5px
 
-style listen fill:#F5F9FF,stroke:#C6DAF7,stroke-width:1.5px
-style job fill:#FFF6F8,stroke:#F2CAD5,stroke-width:1.5px
+    %% Core Pipeline
+    class jobmanager,jobbuilder primary
+    class downloader,cookiemanager,logging process
+    class inqueue,outqueue queue
 
+    %% Job Creation
+    class inputfile,logs neutral
+    class jobhistory history
 
+    %% Clipboard Monitoring
+    class lisqueue queue
+    class listener,worker monitor
 
-style listener fill:#D6EAF8,stroke:#2471A3,color:#154360,stroke-width:2px
-    
-    
-    style worker fill:#FADBD8,stroke:#C0392B,color:#78281F,stroke-width:2px
+    %% Subgraph backgrounds
+    style core fill:#F4F8FF,stroke:#B8CCE8,stroke-width:1.5px,color:#294765
+    style bus fill:#EDF8F2,stroke:#A8D6BE,stroke-width:1.5px,color:#285B48
+    style job fill:#F8F5FF,stroke:#D0C3EB,stroke-width:1.5px,color:#51416F
+    style listen fill:#FFF7F0,stroke:#F0D0B7,stroke-width:1.5px,color:#79482D
+
+    %% Consistent connectors
+    linkStyle default stroke:#91A4BB,stroke-width:1.5px,color:#52677E
